@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">VaultKeeper</string>
+
+    <!-- General UI Strings -->
+    <string name="notes">Notes</string>
+    <string name="files">Files</string>
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+
+    <!-- Note Editor -->
+    <string name="note_title">Title</string>
+    <string name="note_content">Content</string>
+    <string name="note_title_hint">Enter title</string>
+    <string name="note_content_hint">Enter your secure note here</string>
+    <string name="create_note">Create Note</string>
+    <string name="edit_note">Edit Note</string>
+
+    <!-- File Actions -->
+    <string name="import_file">Import File</string>
+    <string name="select_file">Select File</string>
+    <string name="file_name">File Name</string>
+
+    <!-- Biometric Authentication -->
+    <string name="biometric_auth_title">Authenticate to unlock VaultKeeper</string>
+    <string name="biometric_auth_subtitle">Confirm your identity to access your secure data</string>
+    <string name="biometric_auth_description">VaultKeeper uses biometric authentication to secure
+        your data</string>
+    <string name="biometric_auth_negative_button">Cancel</string>
+    <string name="biometric_required">Biometric authentication is required to access the app</string>
+
+    <!-- Error Messages -->
+    <string name="encryption_error">Failed to encrypt data</string>
+    <string name="decryption_error">Failed to decrypt data</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="file_import_error">Failed to import file</string>
+
+    <!-- Settings -->
+    <string name="enable_biometric">Enable Biometric Authentication</string>
+    <string name="biometric_explainer">Use your fingerprint or face to unlock the app</string>
+    <string name="importing">Importing…</string>
+    <string name="import_text_file">Import Text File</string>
+    <string name="select_a_text_file_to_encrypt_and_store_securely">Select a text file to encrypt and store securely in the app. Only .txt files are supported for this demo.</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="no_files_found_tap_to_import_a_file">No files found.\nTap + to import a file</string>
+    <string name="no_items_found_tap_to_add_new_content">No items found.\nTap + to add new content</string>
+    <string name="add_new_note_or_file">Add new note or file</string>
+    <string name="no_notes_found_tap_to_create_a_note">No notes found.\nTap + to create a note</string>
+    <string name="content_description_app_logo">App Logo</string>
+    <string name="file_icon">File icon</string>
+    <string name="delete_file">Delete file</string>
+</resources> 
