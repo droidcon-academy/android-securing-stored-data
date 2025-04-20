@@ -7,12 +7,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.droidcon.vaultkeeper.R
+import com.droidcon.vaultkeeper.data.preferences.EncryptedPreferenceManager
 import com.droidcon.vaultkeeper.databinding.FragmentHomeBinding
 import com.droidcon.vaultkeeper.ui.home.adapter.HomePagerAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,6 +24,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var encryptedPreferenceManager: EncryptedPreferenceManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +37,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        encryptedPreferenceManager = EncryptedPreferenceManager(requireContext())
         
         setupMenu()
         setupViewPager()
@@ -99,17 +104,38 @@ class HomeFragment : Fragment() {
     }
     
     private fun showBiometricDialog() {
+        val isBiometricEnabled = encryptedPreferenceManager.isBiometricEnabled()
+        
+        val dialogTitle = getString(R.string.biometric_auth_title)
+        val dialogMessage = if (isBiometricEnabled) {
+            getString(R.string.biometric_authentication_is_currently_enabled)
+        } else {
+            getString(R.string.biometric_authentication_is_currently_disabled)
+        }
+        
+        val positiveButtonText = if (isBiometricEnabled) "Disable" else "Enable"
+        val negativeButtonText = if (isBiometricEnabled) "Keep Enabled" else "Keep Disabled"
+        
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Biometric Authentication")
-            .setMessage("Do you want to enable biometric authentication for app access?")
-            .setPositiveButton("Enable") { _, _ ->
-                // Enable biometric authentication in preferences
-                // This would typically use the EncryptedPreferenceManager
+            .setTitle(dialogTitle)
+            .setMessage(dialogMessage)
+            .setPositiveButton(positiveButtonText) { _, _ ->
+                // Toggle biometric authentication in preferences
+                encryptedPreferenceManager.setBiometricEnabled(!isBiometricEnabled)
+                
+                val statusMessage = if (!isBiometricEnabled) {
+                    "Biometric authentication enabled"
+                } else {
+                    "Biometric authentication disabled"
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    statusMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            .setNegativeButton("Disable") { _, _ ->
-                // Disable biometric authentication in preferences
-            }
-            .setNeutralButton("Cancel", null)
+            .setNegativeButton(negativeButtonText, null)
             .show()
     }
 } 

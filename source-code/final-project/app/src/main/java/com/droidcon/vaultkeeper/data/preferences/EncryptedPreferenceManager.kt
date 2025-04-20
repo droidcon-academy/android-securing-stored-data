@@ -8,6 +8,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import androidx.core.content.edit
 
 class EncryptedPreferenceManager(context: Context) {
 
@@ -58,5 +59,9 @@ class EncryptedPreferenceManager(context: Context) {
 
     fun isBiometricEnabled(): Boolean {
         return sharedPreferences.getBoolean(KEY_BIOMETRIC_ENABLED, false)
+    }
+    
+    fun setBiometricEnabled(enabled: Boolean) {
+        sharedPreferences.edit { putBoolean(KEY_BIOMETRIC_ENABLED, enabled) }
     }
 }

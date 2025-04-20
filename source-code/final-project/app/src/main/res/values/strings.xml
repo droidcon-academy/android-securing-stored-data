@@ -8,6 +8,8 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="loading">Loading…</string>
+    <string name="authenticate_to_continue">Authenticate to continue</string>
 
     <!-- Note Editor -->
     <string name="note_title">Title</string>
@@ -29,6 +31,7 @@
         your data</string>
     <string name="biometric_auth_negative_button">Cancel</string>
     <string name="biometric_required">Biometric authentication is required to access the app</string>
+    <string name="content_description_fingerprint">Fingerprint Icon</string>
 
     <!-- Error Messages -->
     <string name="encryption_error">Failed to encrypt data</string>
@@ -50,4 +53,6 @@
     <string name="content_description_app_logo">App Logo</string>
     <string name="file_icon">File icon</string>
     <string name="delete_file">Delete file</string>
+    <string name="biometric_authentication_is_currently_enabled">Biometric authentication is currently ENABLED.\n\nThis means that app access requires fingerprint or face recognition. Would you like to disable this feature?</string>
+    <string name="biometric_authentication_is_currently_disabled">Biometric authentication is currently DISABLED.\n\nEnabling this feature will require fingerprint or face recognition to access the app. Would you like to enable this security feature?</string>
 </resources> 

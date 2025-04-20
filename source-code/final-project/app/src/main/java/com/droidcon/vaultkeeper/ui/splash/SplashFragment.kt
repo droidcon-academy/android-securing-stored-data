@@ -62,32 +62,57 @@ class SplashFragment : Fragment() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    // Handle authentication error
-                    Toast.makeText(
-                        requireContext(), 
-                        getString(R.string.auth_failed), 
-                        Toast.LENGTH_SHORT
-                    ).show()
                     
-                    // For this demo, we proceed anyway after error
-                    // In a real app, you might want to exit the app or retry
-                    navigateToHome()
+                    when (errorCode) {
+                        BiometricPrompt.ERROR_NEGATIVE_BUTTON -> {
+                            // User clicked the negative button
+                            Toast.makeText(
+                                requireContext(),
+                                "Authentication cancelled",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            // In a production app, you might want to provide an alternative login method
+                            // or exit the app depending on your security requirements
+                            showAuthenticationFallbackOption()
+                        }
+                        BiometricPrompt.ERROR_NO_BIOMETRICS -> {
+                            // No biometrics enrolled
+                            Toast.makeText(
+                                requireContext(),
+                                "No biometrics enrolled on this device",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            navigateToHome()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "Authentication error: $errString",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            showAuthenticationFallbackOption()
+                        }
+                    }
                 }
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    // Authentication successful, proceed
+                    Toast.makeText(
+                        requireContext(),
+                        "Authentication successful",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     navigateToHome()
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    // Authentication failed
                     Toast.makeText(
-                        requireContext(), 
-                        getString(R.string.auth_failed), 
+                        requireContext(),
+                        getString(R.string.auth_failed),
                         Toast.LENGTH_SHORT
                     ).show()
+                    // Don't navigate yet, let the user try again
                 }
             })
 
@@ -102,10 +127,41 @@ class SplashFragment : Fragment() {
         when (BiometricManager.from(requireContext()).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
                 // Biometric features are available
+                binding.animationView.visibility = View.VISIBLE
+                binding.textStatus.text = getString(R.string.authenticate_to_continue)
                 biometricPrompt.authenticate(promptInfo)
             }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                // No biometric features available on this device
+                Toast.makeText(
+                    requireContext(),
+                    "This device doesn't support biometric authentication",
+                    Toast.LENGTH_LONG
+                ).show()
+                // Disable biometric authentication since it's not supported
+                encryptedPreferenceManager.setBiometricEnabled(false)
+                navigateToHome()
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                // Biometric features are currently unavailable
+                Toast.makeText(
+                    requireContext(),
+                    "Biometric features are currently unavailable",
+                    Toast.LENGTH_LONG
+                ).show()
+                navigateToHome()
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                // The user hasn't enrolled any biometrics
+                Toast.makeText(
+                    requireContext(),
+                    "No biometrics enrolled. Please set up fingerprint or face unlock in system settings",
+                    Toast.LENGTH_LONG
+                ).show()
+                navigateToHome()
+            }
             else -> {
-                // Biometric features are unavailable
+                // Other errors
                 Toast.makeText(
                     requireContext(),
                     "Biometric authentication unavailable",
@@ -114,6 +170,17 @@ class SplashFragment : Fragment() {
                 navigateToHome()
             }
         }
+    }
+    
+    private fun showAuthenticationFallbackOption() {
+        // In a real app, you could show a password entry dialog or other fallback
+        // For this demo, we'll just proceed to the home screen
+        Toast.makeText(
+            requireContext(),
+            "Using fallback authentication method",
+            Toast.LENGTH_SHORT
+        ).show()
+        navigateToHome()
     }
     
     private fun navigateToHome() {
