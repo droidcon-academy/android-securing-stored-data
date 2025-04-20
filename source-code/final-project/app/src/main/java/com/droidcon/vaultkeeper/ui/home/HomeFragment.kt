@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -18,6 +17,7 @@ import com.droidcon.vaultkeeper.data.preferences.EncryptedPreferenceManager
 import com.droidcon.vaultkeeper.databinding.FragmentHomeBinding
 import com.droidcon.vaultkeeper.ui.home.adapter.HomePagerAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -129,10 +129,10 @@ class HomeFragment : Fragment() {
                     "Biometric authentication disabled"
                 }
                 
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     statusMessage,
-                    Toast.LENGTH_SHORT
+                    Snackbar.LENGTH_SHORT
                 ).show()
             }
             .setNegativeButton(negativeButtonText, null)

@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -22,6 +21,7 @@ import com.droidcon.vaultkeeper.databinding.FragmentNoteEditorBinding
 import com.droidcon.vaultkeeper.viewmodel.NoteViewModel
 import com.droidcon.vaultkeeper.viewmodel.NoteViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class NoteEditorFragment : Fragment() {
@@ -98,7 +98,7 @@ class NoteEditorFragment : Fragment() {
                 binding.editTextContent.setText(note.encryptedBody)
             } else {
                 // Handle case where note doesn't exist
-                Toast.makeText(requireContext(), "Note not found", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "Note not found", Snackbar.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
         }

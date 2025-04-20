@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -14,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.droidcon.vaultkeeper.R
 import com.droidcon.vaultkeeper.data.preferences.EncryptedPreferenceManager
 import com.droidcon.vaultkeeper.databinding.FragmentSplashBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
@@ -66,10 +66,10 @@ class SplashFragment : Fragment() {
                     when (errorCode) {
                         BiometricPrompt.ERROR_NEGATIVE_BUTTON -> {
                             // User clicked the negative button
-                            Toast.makeText(
-                                requireContext(),
+                            Snackbar.make(
+                                binding.root,
                                 "Authentication cancelled",
-                                Toast.LENGTH_SHORT
+                                Snackbar.LENGTH_SHORT
                             ).show()
                             // In a production app, you might want to provide an alternative login method
                             // or exit the app depending on your security requirements
@@ -77,18 +77,18 @@ class SplashFragment : Fragment() {
                         }
                         BiometricPrompt.ERROR_NO_BIOMETRICS -> {
                             // No biometrics enrolled
-                            Toast.makeText(
-                                requireContext(),
+                            Snackbar.make(
+                                binding.root,
                                 "No biometrics enrolled on this device",
-                                Toast.LENGTH_LONG
+                                Snackbar.LENGTH_LONG
                             ).show()
                             navigateToHome()
                         }
                         else -> {
-                            Toast.makeText(
-                                requireContext(),
+                            Snackbar.make(
+                                binding.root,
                                 "Authentication error: $errString",
-                                Toast.LENGTH_SHORT
+                                Snackbar.LENGTH_SHORT
                             ).show()
                             showAuthenticationFallbackOption()
                         }
@@ -97,20 +97,20 @@ class SplashFragment : Fragment() {
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        binding.root,
                         "Authentication successful",
-                        Toast.LENGTH_SHORT
+                        Snackbar.LENGTH_SHORT
                     ).show()
                     navigateToHome()
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(
-                        requireContext(),
+                    Snackbar.make(
+                        binding.root,
                         getString(R.string.auth_failed),
-                        Toast.LENGTH_SHORT
+                        Snackbar.LENGTH_SHORT
                     ).show()
                     // Don't navigate yet, let the user try again
                 }
@@ -133,10 +133,10 @@ class SplashFragment : Fragment() {
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
                 // No biometric features available on this device
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     "This device doesn't support biometric authentication",
-                    Toast.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 ).show()
                 // Disable biometric authentication since it's not supported
                 encryptedPreferenceManager.setBiometricEnabled(false)
@@ -144,28 +144,28 @@ class SplashFragment : Fragment() {
             }
             BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                 // Biometric features are currently unavailable
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     "Biometric features are currently unavailable",
-                    Toast.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 ).show()
                 navigateToHome()
             }
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 // The user hasn't enrolled any biometrics
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     "No biometrics enrolled. Please set up fingerprint or face unlock in system settings",
-                    Toast.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 ).show()
                 navigateToHome()
             }
             else -> {
                 // Other errors
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     "Biometric authentication unavailable",
-                    Toast.LENGTH_SHORT
+                    Snackbar.LENGTH_SHORT
                 ).show()
                 navigateToHome()
             }
@@ -175,10 +175,10 @@ class SplashFragment : Fragment() {
     private fun showAuthenticationFallbackOption() {
         // In a real app, you could show a password entry dialog or other fallback
         // For this demo, we'll just proceed to the home screen
-        Toast.makeText(
-            requireContext(),
+        Snackbar.make(
+            binding.root,
             "Using fallback authentication method",
-            Toast.LENGTH_SHORT
+            Snackbar.LENGTH_SHORT
         ).show()
         navigateToHome()
     }

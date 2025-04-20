@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +17,7 @@ import com.droidcon.vaultkeeper.data.repository.EncryptedFileRepository
 import com.droidcon.vaultkeeper.databinding.FragmentFileImportBinding
 import com.droidcon.vaultkeeper.viewmodel.FileViewModel
 import com.droidcon.vaultkeeper.viewmodel.FileViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class FileImportFragment : Fragment() {
 
@@ -100,7 +100,7 @@ class FileImportFragment : Fragment() {
         
         val uri = selectedFileUri
         if (uri == null) {
-            Toast.makeText(requireContext(), "No file selected", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "No file selected", Snackbar.LENGTH_SHORT).show()
             return
         }
         
@@ -112,7 +112,7 @@ class FileImportFragment : Fragment() {
         viewModel.importFile(uri, fileName)
         
         // Go back to the files list
-        Toast.makeText(requireContext(), "File encrypted and saved", Toast.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, "File encrypted and saved", Snackbar.LENGTH_SHORT).show()
         findNavController().navigateUp()
     }
     
