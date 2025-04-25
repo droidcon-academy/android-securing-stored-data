@@ -65,8 +65,8 @@ dependencies {
     // Biometric API
     implementation 'androidx.biometric:biometric:1.2.0-alpha05'
     
-    // Security Crypto Library
-    implementation 'androidx.security:security-crypto:1.1.0-alpha07'
+    // DataStore
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
     
     // Kotlin Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
