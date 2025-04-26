@@ -1,6 +1,8 @@
 package com.droidcon.vaultkeeper.data.preferences
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
@@ -61,6 +63,17 @@ class EncryptedPreferenceManager(private val context: Context) {
     }
 
     /**
+     * Checks if StrongBox is available on the device using PackageManager
+     */
+    private fun hasStrongBox(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            context.packageManager.hasSystemFeature(PackageManager.FEATURE_STRONGBOX_KEYSTORE)
+        } else {
+            false // StrongBox was introduced in Android 9 (API 28)
+        }
+    }
+
+    /**
      * Generates a new AES-256 encryption key in the Android Keystore.
      * This key is protected by the Android Keystore and cannot be exported.
      */
@@ -71,14 +84,27 @@ class EncryptedPreferenceManager(private val context: Context) {
                 "AndroidKeyStore"
             )
             
-            val keyGenParameterSpec = KeyGenParameterSpec.Builder(
+            // Build the KeyGenParameterSpec with StrongBox if available
+            val keyGenParameterSpecBuilder = KeyGenParameterSpec.Builder(
                 KEYSTORE_ALIAS,
                 KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
             )
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                 .setKeySize(256)
-                .build()
+            
+            // Check if StrongBox is available using PackageManager and use it if it is
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val strongBoxAvailable = hasStrongBox()
+                if (strongBoxAvailable) {
+                    keyGenParameterSpecBuilder.setIsStrongBoxBacked(true)
+                    Log.d(TAG, "Using StrongBox hardware security")
+                } else {
+                    Log.d(TAG, "StrongBox not available, using standard hardware-backed security")
+                }
+            }
+            
+            val keyGenParameterSpec = keyGenParameterSpecBuilder.build()
             
             keyGenerator.init(keyGenParameterSpec)
             keyGenerator.generateKey()
