@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.droidcon.vaultkeeper.R
 import com.droidcon.vaultkeeper.data.preferences.EncryptedPreferenceManager
 import kotlinx.coroutines.delay
@@ -126,7 +127,7 @@ fun SplashScreen(navigateToHome: () -> Unit) {
         val executor = remember { ContextCompat.getMainExecutor(context) }
         val biometricPrompt = remember {
             BiometricPrompt(
-                context as androidx.fragment.app.FragmentActivity,
+                context as FragmentActivity,
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
