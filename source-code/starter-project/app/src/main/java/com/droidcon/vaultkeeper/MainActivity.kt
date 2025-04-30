@@ -1,30 +1,31 @@
 package com.droidcon.vaultkeeper
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.droidcon.vaultkeeper.databinding.ActivityMainBinding
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.compose.rememberNavController
+import com.droidcon.vaultkeeper.ui.navigation.VaultKeeperNavHost
+import com.droidcon.vaultkeeper.ui.theme.VaultKeeperTheme
 
-class MainActivity : AppCompatActivity() {
-    
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+class MainActivity : FragmentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-        
-        setupActionBarWithNavController(navController)
-    }
-    
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        setContent {
+            VaultKeeperTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+                    VaultKeeperNavHost(navController = navController)
+                }
+            }
+        }
     }
 } 
