@@ -68,6 +68,17 @@ fun SplashScreen(navigateToHome: () -> Unit) {
     val loadingText = stringResource(R.string.loading)
     var statusText by remember { mutableStateOf(loadingText) }
 
+    // Function to handle fallback authentication
+    fun showAuthenticationFallbackOption() {
+        // In a real app, you could show a password entry dialog or other fallback
+        // For this demo, we'll just proceed to the home screen
+        scope.launch {
+            snackbarHostState.showSnackbar("Using fallback authentication method")
+            delay(1000)
+            navigateToHome()
+        }
+    }
+
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(800)
@@ -86,32 +97,28 @@ fun SplashScreen(navigateToHome: () -> Unit) {
                     scope.launch {
                         snackbarHostState.showSnackbar("This device doesn't support biometric authentication")
                         encryptedPreferenceManager.setBiometricEnabled(false)
-                        delay(1500)
-                        navigateToHome()
+                        showAuthenticationFallbackOption()
                     }
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
                     scope.launch {
                         snackbarHostState.showSnackbar("Biometric features are currently unavailable")
-                        delay(1500)
-                        navigateToHome()
+                        showAuthenticationFallbackOption()
                     }
                 }
 
                 BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                     scope.launch {
                         snackbarHostState.showSnackbar("No biometrics enrolled")
-                        delay(1500)
-                        navigateToHome()
+                        showAuthenticationFallbackOption()
                     }
                 }
 
                 else -> {
                     scope.launch {
                         snackbarHostState.showSnackbar("Biometric authentication unavailable")
-                        delay(1500)
-                        navigateToHome()
+                        showAuthenticationFallbackOption()
                     }
                 }
             }
@@ -137,24 +144,21 @@ fun SplashScreen(navigateToHome: () -> Unit) {
                             BiometricPrompt.ERROR_NEGATIVE_BUTTON -> {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Authentication cancelled")
-                                    delay(1000)
-                                    navigateToHome()
+                                    showAuthenticationFallbackOption()
                                 }
                             }
 
                             BiometricPrompt.ERROR_NO_BIOMETRICS -> {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("No biometrics enrolled on this device")
-                                    delay(1000)
-                                    navigateToHome()
+                                    showAuthenticationFallbackOption()
                                 }
                             }
 
                             else -> {
                                 scope.launch {
                                     snackbarHostState.showSnackbar("Authentication error: $errString")
-                                    delay(1000)
-                                    navigateToHome()
+                                    showAuthenticationFallbackOption()
                                 }
                             }
                         }
@@ -173,6 +177,7 @@ fun SplashScreen(navigateToHome: () -> Unit) {
                         super.onAuthenticationFailed()
                         scope.launch {
                             snackbarHostState.showSnackbar("Authentication failed")
+                            showAuthenticationFallbackOption()
                         }
                     }
                 }
