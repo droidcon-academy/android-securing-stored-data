@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -39,7 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navigateToNoteEditor: (Int) -> Unit,
-    navigateToFileImport: () -> Unit
+    navigateToFileImport: () -> Unit,
+    navigateToPasswordChecker: () -> Unit
 ) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -63,6 +65,12 @@ fun HomeScreen(
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ),
                 actions = {
+                    IconButton(onClick = navigateToPasswordChecker) {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = stringResource(R.string.password_strength_checker)
+                        )
+                    }
                     IconButton(onClick = {
                         showBiometricDialog(
                             context = context,

@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import com.droidcon.vaultkeeper.ui.fileimport.FileImportScreen
 import com.droidcon.vaultkeeper.ui.home.HomeScreen
 import com.droidcon.vaultkeeper.ui.noteeditor.NoteEditorScreen
+import com.droidcon.vaultkeeper.ui.passwordchecker.PasswordCheckerScreen
 import com.droidcon.vaultkeeper.ui.splash.SplashScreen
 
 sealed class Screen(val route: String) {
@@ -18,6 +19,7 @@ sealed class Screen(val route: String) {
         fun createRoute(noteId: Int = -1): String = "note_editor?noteId=$noteId"
     }
     object FileImport : Screen("file_import")
+    object PasswordChecker : Screen("password_checker")
 }
 
 @Composable
@@ -43,6 +45,9 @@ fun VaultKeeperNavHost(navController: NavHostController) {
                 },
                 navigateToFileImport = {
                     navController.navigate(Screen.FileImport.route)
+                },
+                navigateToPasswordChecker = {
+                    navController.navigate(Screen.PasswordChecker.route)
                 }
             )
         }
@@ -65,6 +70,12 @@ fun VaultKeeperNavHost(navController: NavHostController) {
         
         composable(Screen.FileImport.route) {
             FileImportScreen(
+                navigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable(Screen.PasswordChecker.route) {
+            PasswordCheckerScreen(
                 navigateBack = { navController.popBackStack() }
             )
         }

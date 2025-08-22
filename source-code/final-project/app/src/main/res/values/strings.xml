@@ -55,4 +55,18 @@
     <string name="delete_file">Delete file</string>
     <string name="biometric_authentication_is_currently_enabled">Biometric authentication is currently ENABLED.\n\nThis means that app access requires fingerprint or face recognition. Would you like to disable this feature?</string>
     <string name="biometric_authentication_is_currently_disabled">Biometric authentication is currently DISABLED.\n\nEnabling this feature will require fingerprint or face recognition to access the app. Would you like to enable this security feature?</string>
+
+    <!-- Password Checker -->
+    <string name="password_strength_checker">Password Strength Checker</string>
+    <string name="test_password_strength">Test Password Strength</string>
+    <string name="password_checker_description">Enter a password to evaluate its security strength and get recommendations for improvement.</string>
+    <string name="enter_password">Enter password</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="password_strength">Password Strength</string>
+    <string name="weak">Weak</string>
+    <string name="medium">Medium</string>
+    <string name="strong">Strong</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="back">Back</string>
 </resources> 
